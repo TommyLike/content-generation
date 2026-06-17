@@ -1,0 +1,114 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "updated": "2026-06-17",
+    "description": "标准术语表 — 品牌/技术术语的统一写法。TXT-BRAND-003（🟡 强制人审）使用。",
+    "maintainer": "运营人员",
+    "review_cycle": "每月"
+  },
+  "terms": {
+    "openEuler": {
+      "correct": "openEuler",
+      "wrong": ["OpenEuler", "OPENEULER", "openeuler", "Open Euler", "欧拉"],
+      "category": "品牌名",
+      "note": "官方写法为全小写 openEuler，首字母小写"
+    },
+    "EulerOS": {
+      "correct": "EulerOS",
+      "wrong": ["Euler OS", "eulerOS", "euleros"],
+      "category": "产品名"
+    },
+    "Kubernetes": {
+      "correct": "Kubernetes",
+      "wrong": ["kubernetes", "k8s", "K8s"],
+      "category": "技术术语",
+      "note": "正式文档中首次出现用全称，可括注 K8s"
+    },
+    "Docker": {
+      "correct": "Docker",
+      "wrong": ["docker"],
+      "category": "技术术语"
+    },
+    "GitCode": {
+      "correct": "GitCode",
+      "wrong": ["Gitcode", "gitcode", "GITCODE"],
+      "category": "平台名",
+      "note": "与 AtomGit 是同一平台"
+    },
+    "AtomGit": {
+      "correct": "AtomGit",
+      "wrong": ["Atomgit", "atomgit"],
+      "category": "平台名",
+      "note": "与 GitCode 是同一平台"
+    },
+    "AI": {
+      "correct": "AI",
+      "wrong": ["ai", "Ai", "A.I.", "A.I"],
+      "category": "通用缩写"
+    },
+    "RAG": {
+      "correct": "RAG",
+      "wrong": ["rag", "Rag"],
+      "category": "技术术语",
+      "note": "检索增强生成（Retrieval-Augmented Generation）"
+    },
+    "API": {
+      "correct": "API",
+      "wrong": ["api", "Api"],
+      "category": "通用缩写"
+    },
+    "CLI": {
+      "correct": "CLI",
+      "wrong": ["cli", "Cli"],
+      "category": "通用缩写"
+    },
+    "Git": {
+      "correct": "Git",
+      "wrong": ["git"],
+      "category": "工具名"
+    },
+    "Linux": {
+      "correct": "Linux",
+      "wrong": ["linux", "LINUX"],
+      "category": "操作系统"
+    },
+    "GitHub": {
+      "correct": "GitHub",
+      "wrong": ["Github", "github", "GITHUB"],
+      "category": "平台名"
+    },
+    "VS Code": {
+      "correct": "VS Code",
+      "wrong": ["VSCode", "vscode", "Visual Studio Code", "VSCODE"],
+      "category": "工具名"
+    },
+    "LLM": {
+      "correct": "LLM",
+      "wrong": ["llm", "Llm"],
+      "category": "技术术语",
+      "note": "大语言模型（Large Language Model）"
+    },
+    "n8n": {
+      "correct": "n8n",
+      "wrong": ["N8N", "N8n"],
+      "category": "工具名"
+    },
+    "TTS": {
+      "correct": "TTS",
+      "wrong": ["tts", "Tts"],
+      "category": "技术术语",
+      "note": "文本转语音（Text-to-Speech）"
+    },
+    "BGM": {
+      "correct": "BGM",
+      "wrong": ["bgm", "Bgm"],
+      "category": "通用缩写"
+    },
+    "CTA": {
+      "correct": "CTA",
+      "wrong": ["cta", "Cta"],
+      "category": "营销术语",
+      "note": "行动号召（Call to Action）"
+    }
+  }
+}

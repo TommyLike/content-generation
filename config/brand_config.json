@@ -1,0 +1,85 @@
+{
+  "brand_name": "XX开源社区",
+  "version": "1.0",
+  "updated": "2026-06-17",
+  "description": "品牌配置精简版 — 稿定模板为真相源。字体/Logo/版式/装饰/AI标识层全部内化进稿定模板，此JSON仅保留稿定管不到的部分。",
+
+  "gaoding_templates": {
+    "event_preview": {
+      "template_id": "待填入-稿定活动预告模板ID",
+      "description": "活动预告海报 — 活动前宣传用",
+      "fields": ["bg_image", "title", "date", "subtitle", "qr"],
+      "dimensions": "1080×1920"
+    },
+    "event_review": {
+      "template_id": "待填入-稿定活动回顾模板ID",
+      "description": "活动回顾海报 — 活动后总结用",
+      "fields": ["bg_image", "title", "date", "body_text"],
+      "dimensions": "1080×1920"
+    },
+    "guest_poster": {
+      "template_id": "待填入-稿定嘉宾海报模板ID",
+      "description": "嘉宾海报 — 嘉宾单人展示用",
+      "fields": ["bg_image", "guest_photo", "guest_name", "guest_title"],
+      "dimensions": "1080×1920"
+    }
+  },
+
+  "color_check": {
+    "palette": [
+      "#C00000",
+      "#D53C44",
+      "#E3787D",
+      "#F1B4B6",
+      "#FFF1EF"
+    ],
+    "tolerance": 15,
+    "comment": "仅用于底图色彩校验（🟡 IMG-BRAND-003），采样底图主色，偏离超过 tolerance 标警告交人工判断，不强改。"
+  },
+
+  "ai_label_text": "AI生成",
+  "ai_label_font": "思源黑体",
+  "ai_label_font_license": "SIL OFL 1.1",
+  "ai_label_position": "底边居中，不与右下角Logo重叠",
+
+  "fonts": {
+    "primary": {
+      "name": "思源黑体",
+      "family": "Source Han Sans SC",
+      "license": "SIL Open Font License 1.1",
+      "commercial_use": true,
+      "comment": "已上传至稿定模板。微软雅黑版权属方正，商用有诉讼先例，禁止使用。"
+    },
+    "data": {
+      "name": "Impact",
+      "usage": "大数字展示（14号）",
+      "comment": "用于海报中的数据突出展示，系统预装字体"
+    },
+    "english": {
+      "name": "Arial",
+      "usage": "英文文本",
+      "comment": "系统预装字体"
+    }
+  },
+
+  "video_brand": {
+    "intro": "video/intro_3s.mp4",
+    "outro": "video/outro_3s.mp4",
+    "lut": "video/lut_brand.cube",
+    "logo_overlay": "video/logo_overlay.png",
+    "comment": "视频品牌元素文件路径（相对于 brand-assets/），用于WF-3视频品牌固化"
+  },
+
+  "bgm_license": "music/bgm_license.json",
+
+  "ppt_style_reference": {
+    "comment": "来自 CLAUDE.md PPT排版规范，供海报模板设计参考",
+    "primary_color": "#C00000",
+    "color_red_series": ["#C00000", "#D53C44", "#E3787D", "#F1B4B6", "#FFF1EF"],
+    "color_gray_series": ["#8C8C8C", "#A6A6A6", "#BFBFBF", "#D9D9D9"],
+    "font_display": "微软雅黑（PPT内）/ 思源黑体（海报·开源可商用）",
+    "line_weight": "0.5磅",
+    "card_margins": "0.4/0.6/0.8厘米",
+    "content_height": "14厘米"
+  }
+}

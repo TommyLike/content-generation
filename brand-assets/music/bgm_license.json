@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "updated": "2026-06-17",
+    "description": "BGM 授权白名单。VID-AUDIO-002（🔴 阻断）使用，仅登记已获商用授权的曲目。",
+    "maintainer": "设计师"
+  },
+  "licensed_tracks": [
+    {
+      "id": "bgm_001",
+      "filename": "bgm_tech_inspire.mp3",
+      "title": "Tech Inspire",
+      "source": "Epidemic Sound",
+      "license_type": "商用订阅",
+      "license_expiry": "2027-01-15",
+      "duration_sec": 180,
+      "style": "科技/未来感",
+      "bpm": 120,
+      "comment": "适用于科技蓝风格视频"
+    },
+    {
+      "id": "bgm_002",
+      "filename": "bgm_light_energy.mp3",
+      "title": "Light Energy",
+      "source": "Artlist",
+      "license_type": "商用订阅",
+      "license_expiry": "2027-03-01",
+      "duration_sec": 120,
+      "style": "活力/轻快",
+      "bpm": 130,
+      "comment": "适用于活力轻快风格视频"
+    },
+    {
+      "id": "bgm_003",
+      "filename": "bgm_calm_tech.mp3",
+      "title": "Calm Technology",
+      "source": "Epidemic Sound",
+      "license_type": "商用订阅",
+      "license_expiry": "2027-01-15",
+      "duration_sec": 240,
+      "style": "沉稳/专业",
+      "bpm": 90,
+      "comment": "适用于专业沉稳风格视频"
+    }
+  ],
+  "banned_sources": [
+    "未授权网络下载",
+    "网易云音乐",
+    "QQ音乐",
+    "酷狗音乐",
+    "YouTube Audio Library（需确认具体曲目授权）"
+  ]
+}

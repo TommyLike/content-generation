@@ -1,0 +1,119 @@
+{
+  "_meta": {
+    "description": "飞书审核消息卡片模板 — 推送给审核人，含预览和操作按钮",
+    "version": "1.0"
+  },
+  "config": {
+    "wide_screen_mode": true
+  },
+  "header": {
+    "template": "blue",
+    "title": {
+      "content": "📋 {产物类型}待审核 — {活动名称}",
+      "tag": "plain_text"
+    }
+  },
+  "elements": [
+    {
+      "tag": "div",
+      "text": {
+        "tag": "lark_md",
+        "content": "**活动时间**：{活动时间}\n**视觉风格**：{视觉风格}\n**模板类型**：{模板名称}"
+      }
+    },
+    {
+      "tag": "hr"
+    },
+    {
+      "tag": "div",
+      "text": {
+        "tag": "lark_md",
+        "content": "**自动检查报告**：\n🔴 阻断：{阻断数} | 🟡 警告：{警告数} | 🟢 通过：{通过数}\n\n{检查详情摘要}"
+      }
+    },
+    {
+      "tag": "hr"
+    },
+    {
+      "tag": "div",
+      "text": {
+        "tag": "lark_md",
+        "content": "{产物预览链接或文本摘要}"
+      }
+    },
+    {
+      "tag": "hr"
+    },
+    {
+      "tag": "note",
+      "elements": [
+        {
+          "tag": "plain_text",
+          "content": "请审核上述内容。🟡 标记项需逐条确认；地图相关需对照官方地图逐项核对。"
+        }
+      ]
+    },
+    {
+      "tag": "action",
+      "actions": [
+        {
+          "tag": "button",
+          "text": {
+            "tag": "plain_text",
+            "content": "✅ 通过"
+          },
+          "type": "primary",
+          "value": "{record_id}|{产物类型}|approve",
+          "confirm": {
+            "title": {
+              "tag": "plain_text",
+              "content": "确认通过？"
+            },
+            "text": {
+              "tag": "plain_text",
+              "content": "通过后产物状态将置为「已定稿」。"
+            }
+          }
+        },
+        {
+          "tag": "button",
+          "text": {
+            "tag": "plain_text",
+            "content": "🔄 需修改"
+          },
+          "type": "default",
+          "value": "{record_id}|{产物类型}|revise",
+          "confirm": {
+            "title": {
+              "tag": "plain_text",
+              "content": "输入修改意见"
+            },
+            "text": {
+              "tag": "plain_text",
+              "content": "请在飞书表格的「再生成意见」字段中填写具体修改要求后触发重新生成。"
+            }
+          }
+        },
+        {
+          "tag": "button",
+          "text": {
+            "tag": "plain_text",
+            "content": "❌ 驳回"
+          },
+          "type": "danger",
+          "value": "{record_id}|{产物类型}|reject",
+          "confirm": {
+            "title": {
+              "tag": "plain_text",
+              "content": "确认驳回？"
+            },
+            "text": {
+              "tag": "plain_text",
+              "content": "驳回后需运营调整需求后重新提交。"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

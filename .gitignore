@@ -1,0 +1,47 @@
+# =============================================================================
+# .gitignore — 活动内容生产工作流
+# =============================================================================
+
+# 密钥与凭证
+.env
+*.pem
+*.key
+certs/
+credentials/
+secrets/
+
+# n8n 运行时数据
+n8n_data/
+n8n_binary/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Docker
+docker-compose.override.yml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 临时文件
+*.tmp
+*.log
+tmp/
+
+# 运行台账（运行时生成，不入 git）
+artifacts/run_logs/
+
+# 产物（图片/视频量大，不入 git）
+output/
