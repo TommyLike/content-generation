@@ -49,7 +49,7 @@ services:
       - cg-internal
 
   # ===========================================================================
-  # n8n — 仅绑定 127.0.0.1，由宿主 nginx 代理到公网
+  # n8n — 直接暴露 8081 端口访问
   # ===========================================================================
   n8n:
     image: n8nio/n8n:1.82.0
@@ -61,7 +61,7 @@ services:
       redis:
         condition: service_healthy
     ports:
-      - "127.0.0.1:5678:5678"
+      - "0.0.0.0:8081:5678"
     environment:
       # --- 数据库 ---
       DB_TYPE: postgresdb
@@ -77,9 +77,9 @@ services:
       QUEUE_BULL_REDIS_PORT: 6379
       QUEUE_BULL_REDIS_DB: 0
 
-      # --- Webhook URL（飞书回调 https://tommylike.me/webhook/...）---
+      # --- Webhook URL（飞书回调）---
       N8N_HOST: ${N8N_HOST:-tommylike.me}
-      N8N_PROTOCOL: https
+      N8N_PROTOCOL: http
       N8N_PORT: 5678
       WEBHOOK_URL: ${WEBHOOK_URL:-https://tommylike.me/}
       N8N_EDITOR_BASE_URL: ${WEBHOOK_URL:-https://tommylike.me/}
