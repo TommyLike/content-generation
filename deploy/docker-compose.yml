@@ -1,16 +1,16 @@
 # =============================================================================
-# 活动内容生产工作流 — Docker Compose 部署配置
+# 活动内容生产工作流 — Docker Compose（适配宿主 nginx 环境）
 # 设计文档 v3.2，第十章
 # =============================================================================
-# 使用: docker compose up -d
-# 注意: 所有镜像版本固定，勿用 latest 标签
+# 环境特点:
+#   - 宿主 nginx 已占用 80/443，负责 TLS 终止和反向代理
+#   - 宿主已有 PostgreSQL 占用 5432，本栈 PG 只对内不暴露
+#   - n8n 仅绑定 127.0.0.1:5678，由宿主 nginx 代理
 # =============================================================================
-
-version: "3.8"
 
 services:
   # ===========================================================================
-  # PostgreSQL — n8n 执行数据持久化 + Wait 节点恢复
+  # PostgreSQL — n8n 专用（独立于宿主已有的 ossmap-db）
   # ===========================================================================
   postgres:
     image: postgres:16.3-alpine
@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-n8n}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB:-n8n}
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -29,10 +29,9 @@ services:
       retries: 5
     networks:
       - cg-internal
-    # 不暴露端口到宿主机，仅内网访问
 
   # ===========================================================================
-  # Redis — n8n queue 模式（并发子工作流）+ 缓存
+  # Redis — n8n queue 模式 + 缓存
   # ===========================================================================
   redis:
     image: redis:7.4-alpine
@@ -50,7 +49,7 @@ services:
       - cg-internal
 
   # ===========================================================================
-  # n8n — 工作流编排引擎
+  # n8n — 仅绑定 127.0.0.1，由宿主 nginx 代理到公网
   # ===========================================================================
   n8n:
     image: n8nio/n8n:1.82.0
@@ -61,33 +60,35 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    ports:
+      - "127.0.0.1:5678:5678"
     environment:
-      # --- 数据库（生产必须 PostgreSQL，不用 SQLite）---
+      # --- 数据库 ---
       DB_TYPE: postgresdb
       DB_POSTGRESDB_HOST: postgres
       DB_POSTGRESDB_PORT: 5432
       DB_POSTGRESDB_DATABASE: ${POSTGRES_DB:-n8n}
       DB_POSTGRESDB_USER: ${POSTGRES_USER:-n8n}
-      DB_POSTGRESDB_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      DB_POSTGRESDB_PASSWORD: ${POSTGRES_PASSWORD}
 
-      # --- 执行模式 ---
-      EXECUTIONS_MODE: ${N8N_EXECUTIONS_MODE:-queue}
+      # --- 执行模式 (Phase 0 用 regular，后续换 queue) ---
+      EXECUTIONS_MODE: ${N8N_EXECUTIONS_MODE:-regular}
       QUEUE_BULL_REDIS_HOST: redis
       QUEUE_BULL_REDIS_PORT: 6379
       QUEUE_BULL_REDIS_DB: 0
 
-      # --- Webhook（飞书回调的公网入口）---
-      N8N_HOST: ${N8N_HOST:-your-domain.com}
+      # --- Webhook URL（飞书回调 https://tommylike.me/webhook/...）---
+      N8N_HOST: ${N8N_HOST:-tommylike.me}
       N8N_PROTOCOL: https
       N8N_PORT: 5678
-      WEBHOOK_URL: ${WEBHOOK_URL:-https://your-domain.com/}
-      N8N_EDITOR_BASE_URL: ${WEBHOOK_URL:-https://your-domain.com/}
+      WEBHOOK_URL: ${WEBHOOK_URL:-https://tommylike.me/}
+      N8N_EDITOR_BASE_URL: ${WEBHOOK_URL:-https://tommylike.me/}
 
       # --- 安全 ---
-      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}  # 务必设置并备份！
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
       N8N_BASIC_AUTH_ACTIVE: ${N8N_BASIC_AUTH_ACTIVE:-true}
       N8N_BASIC_AUTH_USER: ${N8N_BASIC_AUTH_USER:-admin}
-      N8N_BASIC_AUTH_PASSWORD: ${N8N_BASIC_AUTH_PASSWORD:-changeme}
+      N8N_BASIC_AUTH_PASSWORD: ${N8N_BASIC_AUTH_PASSWORD}
 
       # --- 时区 ---
       GENERIC_TIMEZONE: Asia/Shanghai
@@ -96,42 +97,18 @@ services:
       # --- 日志与清理 ---
       N8N_LOG_LEVEL: ${N8N_LOG_LEVEL:-info}
       EXECUTIONS_DATA_PRUNE: "true"
-      EXECUTIONS_DATA_MAX_AGE: ${EXECUTIONS_DATA_MAX_AGE:-336}  # 14天
-      EXECUTIONS_DATA_PRUNE_TIMEOUT: 3600
+      EXECUTIONS_DATA_MAX_AGE: ${EXECUTIONS_DATA_MAX_AGE:-336}
 
-      # --- 节点配置 ---
-      NODES_EXCLUDE: ""
-      N8N_COMMUNITY_PACKAGES_ENABLED: "false"
-
-      # --- 二进制数据（产物图片/视频暂存）---
+      # --- 二进制数据 ---
       N8N_BINARY_DATA_MODE: filesystem
       N8N_BINARY_DATA_PATH: /data/n8n-binary
 
     volumes:
       - n8n_data:/home/node/.n8n
       - n8n_binary:/data/n8n-binary
-      # 品牌资产只读挂载（n8n Code 节点可读取）
-      - ../brand-assets:/data/brand-assets:ro
-    networks:
-      - cg-internal
-    # n8n 管理界面不直接暴露公网，通过 Nginx 反向代理
-
-  # ===========================================================================
-  # Nginx — 反向代理 + TLS 终止（公网唯一入口）
-  # ===========================================================================
-  nginx:
-    image: nginx:1.27-alpine
-    container_name: cg-nginx
-    restart: unless-stopped
-    depends_on:
-      - n8n
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./certs:/etc/nginx/certs:ro  # TLS 证书目录
-      - nginx_logs:/var/log/nginx
+      - ${PWD}/../brand-assets:/data/brand-assets:ro
+      - ${PWD}/../config:/data/config:ro
+      - ${PWD}/../scripts:/data/scripts:ro
     networks:
       - cg-internal
 
@@ -144,4 +121,3 @@ volumes:
   redis_data:
   n8n_data:
   n8n_binary:
-  nginx_logs:
